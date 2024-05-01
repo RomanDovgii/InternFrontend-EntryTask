@@ -48,7 +48,4 @@ console.log(
 );
 // console.log("Let's rock");
 // console.log(encoded, translations);
-
-
-
 // console.log(decoded)

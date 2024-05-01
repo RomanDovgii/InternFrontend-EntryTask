@@ -1,47 +1,45 @@
 <script lang="ts">
-  import svelteLogo from './assets/svelte.svg'
-  import viteLogo from '/vite.svg'
-  import Counter from './lib/Counter.svelte'
+  import Form from './form.svelte'
+  const url: URL = new URL("https://open.er-api.com/v6/latest/USD");
+
+  interface Response {
+    base_code: string;
+    documentation: string;
+    rates: Object;
+    result: Object;
+    terms_of_use: string;
+    time_eol_unix: number;
+    time_last_update_inux: number;
+    time_last_update_utc: string;
+    time_next_update_unix: number;
+    time_next_update_utc: string;
+  }
+
+  let information : Response = {
+    base_code: '',
+    documentation: '',
+    rates: {},
+    result: {},
+    terms_of_use: '',
+    time_eol_unix: 0,
+    time_last_update_inux: 0,
+    time_last_update_utc: '',
+    time_next_update_unix: 0,
+    time_next_update_utc: '',
+  };
+
+
+  const currencyRates = fetch(url)
+                                          .then(res => res.json())
+                                          .then(data => {
+                                            information = data
+                                          })                                        
+                                          .catch(error => new Error(error))
 </script>
 
 <main>
-  <div>
-    <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-      <img src={viteLogo} class="logo" alt="Vite Logo" />
-    </a>
-    <a href="https://svelte.dev" target="_blank" rel="noreferrer">
-      <img src={svelteLogo} class="logo svelte" alt="Svelte Logo" />
-    </a>
-  </div>
-  <h1>Vite + Svelte</h1>
-
-  <div class="card">
-    <Counter />
-  </div>
-
-  <p>
-    Check out <a href="https://github.com/sveltejs/kit#readme" target="_blank" rel="noreferrer">SvelteKit</a>, the official Svelte app framework powered by Vite!
-  </p>
-
-  <p class="read-the-docs">
-    Click on the Vite and Svelte logos to learn more
-  </p>
+  <Form dataForRender={information.rates} />
 </main>
 
 <style>
-  .logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-    transition: filter 300ms;
-  }
-  .logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
-  }
-  .logo.svelte:hover {
-    filter: drop-shadow(0 0 2em #ff3e00aa);
-  }
-  .read-the-docs {
-    color: #888;
-  }
 </style>
